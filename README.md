@@ -30,16 +30,22 @@ a aplicação oferecerá maior controle sobre o acervo, permitindo acompanhar a 
 ### Entrega 1 - 09/03/2026
 
 Backlog:
-![Backlog](https://i.ibb.co/HDTFK4WG/Captura-de-tela-2026-03-08-201604.png)
+![Backlog](https://i.ibb.co/twtVQB45/Captura-de-tela-2026-03-15-204101.png)
 
 Tela de Log in: (Protótipo)
-![telaLogin](https://i.ibb.co/6RVqCPVJ/Captura-de-tela-2026-03-08-203453.png)
+![telaLogin](https://i.ibb.co/M5x0qYcQ/Captura-de-tela-2026-03-15-202546.png)
 
 Tela Principal: (Protótipo)
-![telaPrincipal](https://i.ibb.co/Gv6TrNCn/Captura-de-tela-2026-03-08-203824.png)
+![telaPrincipal](https://i.ibb.co/KcTNrqRn/Captura-de-tela-2026-03-15-202535.png)
 
 Tela de catálogo: (Protótipo)
-![telaCatalogo](https://i.ibb.co/gLDvnZcS/Captura-de-tela-2026-03-08-203836.png)
+![telaCatalogo](https://i.ibb.co/Pvfv9R0P/Captura-de-tela-2026-03-15-202600.png)
+
+Tela de Detalhes: (Protótipo)
+![telaDetalhes](https://i.ibb.co/1tqSnG5F/Captura-de-tela-2026-03-15-202647.png)
+
+Tela de Meus Livros: (Protótipo)
+![telaMeusLivros](https://i.ibb.co/rGd4RYd2/Captura-de-tela-2026-03-15-202615.png)
 
 Video de apresentação:
 
