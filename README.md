@@ -49,4 +49,4 @@ Tela de Meus Livros: (Protótipo)
 
 Video de apresentação:
 
-[![Video ReadMe](https://img.youtube.com/vi/FaiLLsxP2a4/default.jpg)](https://youtu.be/FaiLLsxP2a4)
+[![Video ReadMe](https://img.youtube.com/vi/FaiLLsxP2a4/default.jpg)](https://youtu.be/zMHRwqA1rkM)
