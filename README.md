@@ -32,6 +32,10 @@ a aplicação oferecerá maior controle sobre o acervo, permitindo acompanhar a 
 Backlog:
 ![Backlog](https://i.ibb.co/twtVQB45/Captura-de-tela-2026-03-15-204101.png)
 
+Figma: 
+</br>
+![Clique aqui para acessar o Figma!](https://www.figma.com/site/eSIqH0rLKXhKKrPWGQ9nS3/ReadMe?node-id=0-1&t=Yvz0XB2YSSObsfkJ-1)
+
 Tela de Log in: (Protótipo)
 ![telaLogin](https://i.ibb.co/M5x0qYcQ/Captura-de-tela-2026-03-15-202546.png)
 
