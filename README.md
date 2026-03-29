@@ -56,3 +56,36 @@ Tela de Meus Livros: (Protótipo)
 Video de apresentação:
 
 [![Video ReadMe](https://img.youtube.com/vi/FaiLLsxP2a4/default.jpg)](https://youtu.be/zMHRwqA1rkM)
+
+---
+### Entrega 02 - 30/03/2026
+
+Link para o JIRA:</br>
+[Acesse aqui](https://pvcb-cesar.atlassian.net/jira/software/projects/FDS/boards/2/backlog)
+</br>
+
+Histórias Selecionadas para implementação:</br>
+![Historias](https://i.ibb.co/BVhGng6L/Captura-de-tela-2026-03-29-172416.png)
+
+Sprint 2:
+![Sprint 2](https://i.ibb.co/m5S6sTNc/Captura-de-tela-2026-03-29-181025.png)
+
+Backlog Atualizado:
+![backlogAtualizado](https://i.ibb.co/Nn6vBLX1/Captura-de-tela-2026-03-29-183455.png)
+
+Issue/bug tracker atualizado:
+![Issue/bug](https://i.ibb.co/3YdycSGv/Captura-de-tela-2026-03-29-194317.png)
+</br></br>
+
+Deploy:</br>
+[Acesse o Deploy](https://pedrovcb.pythonanywhere.com/)
+
+Instruções:
+
+1. Ao acessar o Link acima, você será redirecionado para a página de Menu Principal.
+2. Na página de Menu Principal, é possível pesquisar o título de um livro no catálogo registrado!
+3. Ao achar o livro procurado, a capa irá aparecer na parte central da página. Ao clicar na capa será possível acessar a página específica do livro!
+4. Através da barra de navegação, é possível acessar as outras páginas do ReadMe além do Menu (Como o "Catálogo" e "Meus Livros").
+5. Na página de Catálogo, é possivel verificar os livros registrados e sua disponibilidade. Ao clicar no livro, também é possível acessar a página específica do livro.
+6. Na página "Meus Livros", será possível visualizar quais livros estão em sua custódia, como também checar quantos dias restam em seu empréstimo.
+
