@@ -1,5 +1,32 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/livro.css' %}">
+{% endblock %}
 
 {% block content %}
-    <h1>Livro</h1>
+<main class="livro-main">
+    <div class="livro-container">
+        <div class="livro-capa">
+            {% if livro.capa %}
+                <img src="{{ livro.capa.url }}" alt="{{ livro.titulo }}">
+            {% endif %}
+        </div>
+        <div class="livro-info">
+            <h1>{{ livro.titulo }}</h1>
+            <p class="autor">{{ livro.autor }}</p>
+            <p class="referencia">{{ livro.isbn }}</p>
+            <div class="livro-botoes">
+                {% if livro.disponivel %}
+                    <span class="tag disponivel">Disponível</span>
+                    <button class="btn-reservar">Reservar</button>
+                {% else %}
+                    <span class="tag reservado">Reservado</span>
+                    <button class="btn-alertar">Alertar Disponibilidade</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
 {% endblock %}

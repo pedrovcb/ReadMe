@@ -26,18 +26,31 @@ class Usuario(models.Model):
 
 def devolucaoPadrao():
     return date.today() + timedelta(days=10)
-    
+
 class Emprestimo(models.Model):
     livro = models.ForeignKey(Livro, on_delete=models.CASCADE)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    dataEmprestimo = models.DateField(auto_now_add=True)
-    dataDevolucao = models.DateField(default = devolucaoPadrao)
+    dataEmprestimo = models.DateField(default=date.today)
+    dataDevolucao = models.DateField(default=devolucaoPadrao)
     renovacoes = models.IntegerField(default=0)
     maxRenovacoes = models.IntegerField(default=1)
     devolvido = models.BooleanField(default=False)
 
+    @property
     def diasRestantes(self):
-        return(self.dataDevolucao - date.today()).days
+        return (self.dataDevolucao - date.today()).days
+
+    @property
+    def diasUsados(self):
+        return (date.today() - self.dataEmprestimo).days
+
+    @property
+    def progresso(self):
+        total = (self.dataDevolucao - self.dataEmprestimo).days
+        if total == 0:
+            return 0
+        usados = self.diasUsados
+        return min(int((usados / total) * 100), 100)
 
     def __str__(self):
-        return f'{self.membro.nome} - {self.livro.titulo}'
+        return f'{self.usuario.nome} - {self.livro.titulo}'

@@ -1,5 +1,29 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/catalogo.css' %}">
+{% endblock %}
 
 {% block content %}
-    <h1>Catalogo</h1>
+<main class="catalogo-main">
+    <h1>Livros Disponíveis</h1>
+    <div class="livros-grid">
+        {% for livro in livros %}
+        <a href="{% url 'livro' livro.id %}" class="livro-card">
+            <div class="livro-capa">
+                {% if livro.capa %}
+                    <img src="{{ livro.capa.url }}" alt="{{ livro.titulo }}">
+                {% endif %}
+                <span class="status {% if livro.disponivel %}disponivel{% else %}reservado{% endif %}">
+                    {% if livro.disponivel %}Disponível{% else %}Reservado{% endif %}
+                </span>
+            </div>
+            <p class="livro-titulo">{{ livro.titulo }}</p>
+        </a>
+        {% empty %}
+        <p>Nenhum livro cadastrado ainda.</p>
+        {% endfor %}
+    </div>
+</main>
 {% endblock %}
