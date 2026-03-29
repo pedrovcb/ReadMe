@@ -14,12 +14,28 @@
         </div>
         <div class="search-area">
             <div class="book-placeholder">
-                <span>?</span>
+                {% if livro %}
+                    {% if livro.capa %}
+                        <a href="{% url 'livro' livro.id %}">
+                            <img src="{{ livro.capa.url }}" alt="{{ livro.titulo }}" class="book-result-img">
+                        </a>
+                    {% else %}
+                        <a href="{% url 'livro' livro.id %}">
+                            <span class="book-titulo-result">{{ livro.titulo }}</span>
+                        </a>
+                    {% endif %}
+                {% elif erro %}
+                    <span class="book-erro">{{ erro }}</span>
+                {% else %}
+                    <span>?</span>
+                {% endif %}
             </div>
-            <div class="search-bar">
-                <input type="text" placeholder="Digite o nome do livro...">
-                <button>Pesquisar</button>
-            </div>
+            <form method="GET" action="{% url 'menu' %}">
+                <div class="search-bar">
+                    <input type="text" name="q" placeholder="Digite o nome do livro..." value="{{ query }}">
+                    <button type="submit">Pesquisar</button>
+                </div>
+            </form>
         </div>
     </div>
 </main>

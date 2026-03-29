@@ -19,7 +19,17 @@ def loginView(request):
     return render(request, 'login.html')
 
 def menu(request):
-    return render(request, 'biblioteca/menu.html')
+    livro = None
+    erro = None
+    query = request.GET.get('q', '')
+    if query:
+        try:
+            livro = Livro.objects.filter(titulo__icontains=query).first()
+            if not livro:
+                erro = 'Nenhum livro encontrado.'
+        except:
+            erro = 'Erro na pesquisa.'
+    return render(request, 'biblioteca/menu.html', {'livro': livro, 'erro': erro, 'query': query})
 
 def catalogo(request):
     livros = Livro.objects.all()
