@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>ReadMe - Login</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+    <header>
+        <a href="#" class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="ReadMe">
+            <span>ReadMe</span>
+        </a>
+    </header>
+    <main>
+        <h1>Log In</h1>
+        <div class="login-box">
+            <form method="POST" action="">
+                {% csrf_token %}
+                <input type="text" name="usuario" placeholder="Usuário ou E-mail">
+                <input type="password" name="senha" placeholder="Senha">
+                <button type="submit">Log In</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

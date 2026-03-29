@@ -1,0 +1,84 @@
+.menu-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 40px;
+    position: relative;
+}
+
+.search-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.owl-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    position: absolute;
+    left: 60px;
+}
+
+.owl-img {
+    width: 80px;
+    object-fit: contain;
+}
+
+.owl-section p {
+    font-size: 0.9rem;
+    color: #333;
+    line-height: 1.5;
+}
+
+.search-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.book-placeholder {
+    width: 160px;
+    height: 220px;
+    background-color: #d9d9d9;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: #555;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.search-bar input {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    outline: none;
+    width: 200px;
+}
+
+.search-bar button {
+    padding: 8px 20px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.search-bar button:hover {
+    background-color: #333;
+}

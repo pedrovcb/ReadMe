@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>ReadMe</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav>
+        <div class="nav-links">
+            <a href="{% url 'catalogo' %}">Catálogo</a>
+            <a href="{% url 'meusLivros' %}">Meus Livros</a>
+        </div>
+        <a href="{% url 'menu' %}" class="nav-logo">
+            <img src="{% static 'img/logo.png' %}" alt="ReadMe">
+            <span>ReadMe</span>
+        </a>
+    </nav>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

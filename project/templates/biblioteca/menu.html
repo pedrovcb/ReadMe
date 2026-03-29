@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/menu.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="menu-main">
+    <div class="search-section">
+        <div class="owl-section">
+            <img src="{% static 'img/owl.png' %}" alt="Coruja assistente" class="owl-img">
+            <p>Olá! Eu sou a Coruja<br>assistente.<br>Pesquise um livro!</p>
+        </div>
+        <div class="search-area">
+            <div class="book-placeholder">
+                <span>?</span>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Digite o nome do livro...">
+                <button>Pesquisar</button>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
