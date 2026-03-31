@@ -31,12 +31,17 @@ a aplicação oferecerá maior controle sobre o acervo, permitindo acompanhar a 
 
 Backlog:
 ![Backlog](https://i.ibb.co/twtVQB45/Captura-de-tela-2026-03-15-204101.png)
-Doc: [Histórias Backlog](https://drive.google.com/file/d/1tLKnmb-PFrOygPuJNGMEZmyTJAREV4qd/view?usp=sharing)
-</br></br>
+
+Doc:
+</br>
+[Histórias Backlog](https://drive.google.com/file/d/1tLKnmb-PFrOygPuJNGMEZmyTJAREV4qd/view?usp=sharing)
+</br>
 
 Figma: 
 </br>
 [Clique aqui para acessar o Figma!](https://www.figma.com/site/eSIqH0rLKXhKKrPWGQ9nS3/ReadMe?node-id=0-1&t=Yvz0XB2YSSObsfkJ-1)
+
+</br>
 
 Tela de Log in: (Protótipo)
 ![telaLogin](https://i.ibb.co/M5x0qYcQ/Captura-de-tela-2026-03-15-202546.png)
@@ -55,7 +60,7 @@ Tela de Meus Livros: (Protótipo)
 
 Video de apresentação:
 
-[![Video ReadMe](https://img.youtube.com/vi/FaiLLsxP2a4/default.jpg)](https://youtu.be/zMHRwqA1rkM)
+[Clique aqui para acessar o vídeo](https://youtu.be/zMHRwqA1rkM)
 
 ---
 ### Entrega 02 - 30/03/2026
@@ -74,12 +79,15 @@ Backlog Atualizado:
 ![backlogAtualizado](https://i.ibb.co/Nn6vBLX1/Captura-de-tela-2026-03-29-183455.png)
 
 Issue/bug tracker atualizado:
-![Issue/bug](https://i.ibb.co/3YdycSGv/Captura-de-tela-2026-03-29-194317.png)
+![Issue/bug](https://i.ibb.co/39nWxVzx/image.png)
 </br></br>
 
-Deploy:</br>
+</br>
+Deploy:
+
 [Acesse o Deploy](https://pedrovcb.pythonanywhere.com/)
 
+</br>
 Instruções:
 
 1. Ao acessar o Link acima, você será redirecionado para a página de Menu Principal.
@@ -89,3 +97,13 @@ Instruções:
 5. Na página de Catálogo, é possivel verificar os livros registrados e sua disponibilidade. Ao clicar no livro, também é possível acessar a página específica do livro.
 6. Na página "Meus Livros", será possível visualizar quais livros estão em sua custódia, como também checar quantos dias restam em seu empréstimo.
 
+</br>
+Relato Programação em Par:
+
+- Para evitar problemas com Merge Conflicts, preferimos utilizar de outros meios de comunicação (Discord e Whatsapp) entre os membros do grupo para avaliar e modificar o código antes de realizar a commit na main branch do projeto no Github.
+
+</br>
+
+Vídeo da Entrega 02: 
+</br>
+[Clique aqui para acessar o vídeo](https://youtu.be/ggHI4cv6ZjY)
