@@ -1,0 +1,113 @@
+.livro-main {
+    padding: 40px 60px;
+}
+
+.livro-container {
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+}
+
+.livro-capa {
+    width: 320px;
+    min-width: 320px;
+    aspect-ratio: 2/3;
+    background-color: #d9d9d9;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 0 0 5px #cccccc;
+}
+
+.livro-capa img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.livro-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 8px;
+}
+
+.livro-info h1 {
+    font-size: 2rem;
+    font-weight: 500;
+    color: #000;
+    line-height: 1.3;
+}
+
+.autor {
+    font-size: 1rem;
+    color: #666;
+}
+
+.referencia {
+    font-size: 0.85rem;
+    color: #888;
+    padding-top: 60px;
+}
+
+.livro-botoes {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.tag {
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    color: #fff;
+    font-weight: 500;
+}
+
+.tag.disponivel {
+    background-color: #4caf50;
+}
+
+.tag.reservado {
+    background-color: #a93226;
+}
+
+.btn-reservar {
+    padding: 10px 24px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-reservar:hover {
+    background-color: #333;
+}
+
+.btn-alertar {
+    padding: 10px 24px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-alertar:hover {
+    background-color: #333;
+}
+
+@media (max-width: 640px) {
+    .livro-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .livro-main {
+        padding: 24px 20px;
+    }
+}
