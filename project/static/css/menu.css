@@ -1,14 +1,15 @@
 .menu-main {
-    background-color: #5a6e3a;
+    background-image: url("../img/bg.png");
+    background-size: cover;
+    background-position: center;
     min-height: 100vh;
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    position: relative;
-    padding: 30px 40px;
-    gap: 40px;
+    justify-content: space-between;
+    padding: 30px 100px;
+    gap: 80px;
 }
-
 .owl-section {
     display: flex;
     flex-direction: column;
@@ -16,6 +17,7 @@
     text-align: center;
     gap: 10px;
     flex-shrink: 0;
+    margin-left: 40px;
 }
 
 .owl-img {
@@ -44,15 +46,13 @@
 }
 
 .search-area {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -40%);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 14px;
-    z-index: 1;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .book-placeholder {

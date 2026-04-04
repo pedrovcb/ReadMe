@@ -6,41 +6,36 @@
 {% endblock %}
 
 {% block content %}
-<main class="menu-main">
+<main class="menu-main" style="background-image: url('{% static "img/bg.png" %}');">
     <div class="owl-section">
         <img src="{% static 'img/owl.png' %}" alt="Coruja" class="owl-img">
         <p>Olá! Eu sou a Coruja<br>assistente.<br>Pesquise um livro!</p>
     </div>
 
-    <div class="tree-wrapper">
-        <img src="{% static 'img/tree.png' %}" alt="árvore" class="tree-img">
-        
-        <div class="search-area">
-            <div class="book-placeholder">
-                {% if livro %}
-                    {% if livro.capa %}
-                        <a href="{% url 'livro' livro.id %}">
-                            <img src="{{ livro.capa.url }}" alt="{{ livro.titulo }}" class="book-result-img">
-                        </a>
-                    {% else %}
-                        <a href="{% url 'livro' livro.id %}">
-                            <span class="book-titulo-result">{{ livro.titulo }}</span>
-                        </a>
-                    {% endif %}
-                {% elif erro %}
-                    <span class="book-erro">{{ erro }}</span>
+    <div class="search-area">
+        <div class="book-placeholder">
+            {% if livro %}
+                {% if livro.capa %}
+                    <a href="{% url 'livro' livro.id %}">
+                        <img src="{{ livro.capa.url }}" alt="{{ livro.titulo }}" class="book-result-img">
+                    </a>
                 {% else %}
-                    <span>?</span>
+                    <a href="{% url 'livro' livro.id %}">
+                        <span class="book-titulo-result">{{ livro.titulo }}</span>
+                    </a>
                 {% endif %}
-            </div>
-            
-            <form method="GET" action="{% url 'menu' %}">
-                <div class="search-bar">
-                    <input type="text" name="q" placeholder="Digite o nome do livro..." value="{{ query }}">
-                    <button type="submit">Pesquisar</button>
-                </div>
-            </form>
+            {% elif erro %}
+                <span class="book-erro">{{ erro }}</span>
+            {% else %}
+                <span>?</span>
+            {% endif %}
         </div>
+        <form method="GET" action="{% url 'menu' %}">
+            <div class="search-bar">
+                <input type="text" name="q" placeholder="Digite o nome do livro..." value="{{ query }}">
+                <button type="submit">Pesquisar</button>
+            </div>
+        </form>
     </div>
 </main>
 {% endblock %}
