@@ -1,5 +1,7 @@
-from django.shortcuts import render
-from .models import Livro, Usuario, Emprestimo
+from django.shortcuts import render, redirect
+from .models import Livro, Usuario, Emprestimo, AlertaLivroDisponivel
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 # Create your views here.
 
@@ -42,3 +44,20 @@ def livro(request, id):
 def meusLivros(request):
     emprestimos = Emprestimo.objects.filter(devolvido=False)
     return render(request, 'biblioteca/meusLivros.html', {'emprestimos': emprestimos})
+
+@login_required
+def criar_alerta(request, id):
+    livro = Livro.objects.get(id=id)
+
+    alerta, criado = AlertaLivroDisponivel.objects.get_or_create(
+        usuario=request.user,
+        livro=livro,
+        defaults={'ativo': True}
+    )
+
+    if not criado and not alerta.ativo:
+        alerta.ativo = True
+        alerta.save()
+
+    messages.success(request, 'Alerta de disponibilidade ativado com sucesso.')
+    return redirect('livro', id=livro.id)
