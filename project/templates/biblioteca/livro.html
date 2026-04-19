@@ -18,12 +18,18 @@
             <p class="autor">{{ livro.autor }}</p>
             <p class="referencia">{{ livro.isbn }}</p>
             <div class="livro-botoes">
-                {% if livro.disponivel %}
+                {% if livro.quantidade > 0 %}
                     <span class="tag disponivel">Disponível</span>
                     <button class="btn-reservar">Reservar</button>
                 {% else %}
                     <span class="tag reservado">Reservado</span>
-                    <button class="btn-alertar">Alertar Disponibilidade</button>
+
+                    <form method="post" action="{% url 'criar_alerta' livro.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-alertar">
+                            Ativar alerta
+                        </button>
+                    </form>
                 {% endif %}
             </div>
         </div>
