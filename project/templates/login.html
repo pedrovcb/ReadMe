@@ -22,6 +22,9 @@
                 <input type="text" name="usuario" placeholder="Usuário ou E-mail">
                 <input type="password" name="senha" placeholder="Senha">
                 <button type="submit">Log In</button>
+                {% if erro %}
+                    <p style="color:red;">{{ erro }}</p>
+                {% endif %}
             </form>
         </div>
     </main>

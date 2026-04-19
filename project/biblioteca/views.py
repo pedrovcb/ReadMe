@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
 from .models import Livro, Usuario, Emprestimo
 
 # Create your views here.
@@ -15,7 +16,20 @@ def home(request):
     })
 """
 
+
 def loginView(request):
+    if request.method == 'POST':
+        usuario = request.POST.get('usuario')
+        senha = request.POST.get('senha')
+
+        user = authenticate(request, username=usuario, password=senha)
+
+        if user is not None:
+            login(request, user)
+            return redirect('menu')
+        else:
+            return render(request, 'login.html', {'erro': 'Usuário ou senha inválidos.'})
+    
     return render(request, 'login.html')
 
 def menu(request):
