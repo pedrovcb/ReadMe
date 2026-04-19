@@ -17,7 +17,7 @@ def home(request):
     })
 """
 
-def loginView(request):
+def login_view(request):
     return render(request, 'login.html')
 
 def menu(request):
