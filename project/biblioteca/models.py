@@ -1,6 +1,8 @@
 from django.db import models
 from datetime import date, timedelta
+from django.contrib.auth.models import User
 
+#Importando "Usuário" para emitir alerta sobre um livro disponível
 # Create your models here.
 
 class Livro(models.Model):
@@ -54,3 +56,12 @@ class Emprestimo(models.Model):
 
     def __str__(self):
         return f'{self.usuario.nome} - {self.livro.titulo}'
+    
+class AlertaLivroDisponivel(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    livro = models.ForeignKey('Livro', on_delete=models.CASCADE)
+    ativo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.usuario} - {self.livro}"
+
