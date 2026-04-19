@@ -18,6 +18,7 @@ class Livro(models.Model):
     
 
 class Usuario(models.Model):
+    id_autenticado = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     nome = models.CharField(max_length=200)
     email = models.EmailField(unique=True)
     matricula = models.CharField(max_length=10)
