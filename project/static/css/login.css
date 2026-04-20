@@ -5,7 +5,7 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     background-color: #ffffff;
     min-height: 100vh;
     display: flex;
@@ -86,6 +86,19 @@ main h1 {
     text-align: center;
 }
 
+.login-box input::placeholder{
+    color: #999;
+}
+
+.login-box input:focus {
+  box-shadow: 0 0 0 2px #111;
+}
+
+.login-box input-full {
+  width: 100%;
+  max-width: 560px;
+}
+
 .login-box button {
     width: 100%;
     padding: 16px;
@@ -99,7 +112,10 @@ main h1 {
 }
 
 .login-box button:hover {
-    background-color: #222222;
+    background-color: #333;
+}
+.login-box button:active {
+    transform: scale(0.98);
 }
 
 /* Responsividade */
