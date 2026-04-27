@@ -23,6 +23,11 @@
                 <input type="text" name="usuario" placeholder="Usuário ou E-mail">
                 <input type="password" name="senha" placeholder="Senha">
                 <button type="submit">Log In</button>
+
+                <a href="{% url 'cadastro' %}" class="btn-cadastro">
+                    Não possui conta? Cadastre-se
+                </a>
+
                 {% if erro %}
                     <p style="color:red;">{{ erro }}</p>
                 {% endif %}

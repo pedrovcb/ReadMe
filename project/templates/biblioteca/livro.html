@@ -17,6 +17,13 @@
             <h1>{{ livro.titulo }}</h1>
             <p class="autor">{{ livro.autor }}</p>
             <p class="referencia">{{ livro.isbn }}</p>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <p style="color: green;">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+            
             <div class="livro-botoes">
                 {% if livro.quantidade > 0 %}
                     <span class="tag disponivel">Disponível</span>
