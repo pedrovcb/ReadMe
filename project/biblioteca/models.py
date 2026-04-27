@@ -68,6 +68,9 @@ class Emprestimo(models.Model):
         self.renovacoes += 1
         self.save()
         return True
+    @property
+    def renovacoes_restantes(self):
+        return max(0, self.maxRenovacoes - self.renovacoes)
 
     
     

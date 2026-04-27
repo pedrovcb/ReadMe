@@ -30,8 +30,8 @@
                     {% csrf_token %}
                     <button 
                         type="submit"
-                        class="btn-renovar {% if emprestimo.diasRestantes <= 0 %}ativo{% endif %}"
-                        {% if emprestimo.diasRestantes > 0 %}disabled{% endif %}
+                        class="btn-renovar {% if emprestimo.diasRestantes <= 0 and emprestimo.pode_renovar %}ativo{% endif %}"
+                        {% if emprestimo.diasRestantes > 0 or not emprestimo.pode_renovar %}disabled{% endif %}
                     >
                         Renovar
                     </button>
@@ -52,7 +52,12 @@
 
             {% if emprestimo.diasRestantes <= 0 %}
                 <p class="renovacoes-texto">
-                    {{ emprestimo.maxRenovacoes|add:"-"|add:emprestimo.renovacoes }} renovação restante
+                    {{ emprestimo.maxRenovacoes|add:"-"|add:emprestimo.renovacoes }} renovações restantes
+                </p>
+            {% endif %}
+            {% if emprestimo.diasRestantes == 1 %}
+                <p class="renovacoes-texto">
+                    {{ emprestimo.renovacoes_restantes }} renovação restante.
                 </p>
             {% endif %}
 
