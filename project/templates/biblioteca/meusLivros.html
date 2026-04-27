@@ -11,35 +11,61 @@
 
     {% for emprestimo in emprestimos %}
     <div class="emprestimo-card">
+        
         <div class="livro-capa">
             {% if emprestimo.livro.capa %}
                 <img src="{{ emprestimo.livro.capa.url }}" alt="{{ emprestimo.livro.titulo }}">
             {% endif %}
             <p class="livro-titulo">{{ emprestimo.livro.titulo }}</p>
         </div>
-        <div class="emprestimo-info">
+        
+        <div class="emprestimo-info">            
             <div class="barra-container">
                 <div class="barra-progresso">
                     <div class="barra-fill" style="width: {{ emprestimo.progresso }}%"></div>
                 </div>
-                <button class="btn-renovar {% if emprestimo.diasRestantes <= 0 %}ativo{% endif %}"
-                    {% if emprestimo.diasRestantes > 0 %}disabled{% endif %}>
-                    Renovar
-                </button>
+
+                
+                <form method="POST" action="{% url 'renovar_livro' emprestimo.id %}">
+                    {% csrf_token %}
+                    <button 
+                        type="submit"
+                        class="btn-renovar {% if emprestimo.diasRestantes <= 0 and emprestimo.pode_renovar %}ativo{% endif %}"
+                        {% if emprestimo.diasRestantes > 0 or not emprestimo.pode_renovar %}disabled{% endif %}
+                    >
+                        Renovar
+                    </button>
+                </form>
             </div>
+
             {% if emprestimo.diasRestantes > 0 %}
-                <p class="status-texto">Restam {{ emprestimo.diasRestantes }} dias em seu empréstimo!</p>
+                <p class="status-texto">
+                    Restam {{ emprestimo.diasRestantes }} dias em seu empréstimo!
+                </p>
             {% else %}
-                <p class="status-texto vencido">Seu empréstimo chegou ao fim!</p>
+                <p class="status-texto vencido">
+                    Seu empréstimo chegou ao fim!
+                </p>
             {% endif %}
+
             <p class="dias-texto">{{ emprestimo.diasUsados }}/10 Dias</p>
+
             {% if emprestimo.diasRestantes <= 0 %}
-                <p class="renovacoes-texto">{{ emprestimo.maxRenovacoes|add:"-"|add:emprestimo.renovacoes }} renovação restante</p>
+                <p class="renovacoes-texto">
+                    {{ emprestimo.renovacoes_restantes }} renovações restantes
+                </p>
             {% endif %}
+            {% if emprestimo.diasRestantes == 1 %}
+                <p class="renovacoes-texto">
+                    {{ emprestimo.renovacoes_restantes }} renovação restante.
+                </p>
+            {% endif %}
+
         </div>
     </div>
+
     {% empty %}
-    <p>Nenhum empréstimo ativo.</p>
+        <p>Nenhum empréstimo ativo.</p>
     {% endfor %}
 </main>
 {% endblock %}

@@ -39,6 +39,9 @@ class Emprestimo(models.Model):
     maxRenovacoes = models.IntegerField(default=1)
     devolvido = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f'{self.usuario.nome} - {self.livro.titulo}'
+
     @property
     def diasRestantes(self):
         return (self.dataDevolucao - date.today()).days
@@ -54,9 +57,22 @@ class Emprestimo(models.Model):
             return 0
         usados = self.diasUsados
         return min(int((usados / total) * 100), 100)
+    
+    def pode_renovar(self):
+        return self.renovacoes < self.maxRenovacoes
+    def renovar(self):
+        if not self.pode_renovar():
+            return False
 
-    def __str__(self):
-        return f'{self.usuario.nome} - {self.livro.titulo}'
+        self.dataDevolucao += timedelta(days=7)
+        self.renovacoes += 1
+        self.save()
+        return True
+    @property
+    def renovacoes_restantes(self):
+        return max(0, self.maxRenovacoes - self.renovacoes)
+
+    
     
 class AlertaLivroDisponivel(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
