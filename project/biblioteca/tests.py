@@ -252,3 +252,205 @@ class PaginaCatalogoTest(TestCase):
 
 
 
+# PÁGINA: livro.html
+
+
+class PaginaLivroTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.livro_disponivel = Livro.objects.create(
+            titulo="Memorias Postumas", autor="Machado de Assis",
+            isbn="004", quantidade=2, disponivel=True
+        )
+        self.livro_esgotado = Livro.objects.create(
+            titulo="Vidas Secas", autor="Graciliano Ramos",
+            isbn="005", quantidade=0, disponivel=False
+        )
+        self.user = User.objects.create_user(username="leitor", password="senha123")
+
+    def _url(self, livro):
+        return reverse("livro", args=[livro.id])
+
+    # --- Carregamento ---
+    def test_pagina_livro_disponivel_carrega(self):
+        response = self.client.get(self._url(self.livro_disponivel))
+        self.assertEqual(response.status_code, 200)
+
+    def test_pagina_livro_esgotado_carrega(self):
+        response = self.client.get(self._url(self.livro_esgotado))
+        self.assertEqual(response.status_code, 200)
+
+    # --- Conteúdo HTML ---
+    def test_titulo_do_livro_visivel(self):
+        response = self.client.get(self._url(self.livro_disponivel))
+        self.assertContains(response, "Memorias Postumas")
+
+    def test_autor_do_livro_visivel(self):
+        response = self.client.get(self._url(self.livro_disponivel))
+        self.assertContains(response, "Machado de Assis")
+
+    def test_isbn_visivel(self):
+        response = self.client.get(self._url(self.livro_disponivel))
+        self.assertContains(response, "004")
+
+    # --- Botões condicionais ---
+    def test_botao_reservar_aparece_quando_disponivel(self):
+        response = self.client.get(self._url(self.livro_disponivel))
+        self.assertContains(response, "Reservar")
+
+    def test_tag_disponivel_aparece_quando_disponivel(self):
+        response = self.client.get(self._url(self.livro_disponivel))
+        self.assertContains(response, "Disponível")
+
+    def test_botao_ativar_alerta_aparece_quando_esgotado(self):
+        response = self.client.get(self._url(self.livro_esgotado))
+        self.assertContains(response, "Ativar alerta")
+
+    def test_tag_reservado_aparece_quando_esgotado(self):
+        response = self.client.get(self._url(self.livro_esgotado))
+        self.assertContains(response, "Reservado")
+
+    # --- Formulário de alerta ---
+    def test_formulario_alerta_aponta_para_url_correta(self):
+        response = self.client.get(self._url(self.livro_esgotado))
+        self.assertContains(response, reverse("criar_alerta", args=[self.livro_esgotado.id]))
+
+    def test_alerta_requer_login(self):
+        url = reverse("criar_alerta", args=[self.livro_esgotado.id])
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 302)
+
+    def test_alerta_criado_com_usuario_logado(self):
+        self.client.login(username="leitor", password="senha123")
+        url = reverse("criar_alerta", args=[self.livro_esgotado.id])
+        self.client.post(url)
+        self.assertTrue(
+            AlertaLivroDisponivel.objects.filter(
+                usuario=self.user, livro=self.livro_esgotado
+            ).exists()
+        )
+
+
+
+# PÁGINA: meusLivros.html
+
+
+class PaginaMeusLivrosTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.url = reverse("meusLivros")
+        auth_user = User.objects.create_user(username="pedro", password="senha123")
+        self.usuario = Usuario.objects.create(
+            id_autenticado=auth_user,
+            nome="Pedro", email="pedro@email.com", matricula="2024003"
+        )
+        self.livro = Livro.objects.create(
+            titulo="Grande Sertao Veredas", autor="Guimaraes Rosa", isbn="006"
+        )
+        self.emprestimo = Emprestimo.objects.create(
+            livro=self.livro,
+            usuario=self.usuario,
+            dataEmprestimo=date.today() - timedelta(days=3),
+            dataDevolucao=date.today() + timedelta(days=7),
+        )
+
+    # --- Carregamento ---
+    def test_pagina_carrega(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    # --- Conteúdo HTML ---
+    def test_heading_meus_livros_visivel(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "Meus Livros")
+
+    def test_titulo_do_livro_emprestado_aparece(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "Grande Sertao Veredas")
+
+    def test_dias_restantes_aparecem(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "Restam")
+        self.assertContains(response, "dias em seu empr")
+
+    def test_barra_de_progresso_presente(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "barra-progresso")
+
+    def test_botao_renovar_presente(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "Renovar")
+
+    # --- Estado vencido ---
+    def test_emprestimo_vencido_exibe_mensagem(self):
+        self.emprestimo.dataDevolucao = date.today() - timedelta(days=1)
+        self.emprestimo.save()
+        response = self.client.get(self.url)
+        self.assertContains(response, "chegou ao fim")
+
+    # --- Lista vazia ---
+    def test_sem_emprestimos_exibe_mensagem(self):
+        Emprestimo.objects.all().delete()
+        response = self.client.get(self.url)
+        self.assertContains(response, "Nenhum empr")
+
+       
+# PÁGINA: profDiciplinaCategoria.html
+
+
+class PaginaProfDisciplinaCategoriaTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.url = reverse("profDiciplinaCategoria")
+
+    # --- Carregamento ---
+    def test_pagina_carrega(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    # --- Conteúdo HTML ---
+    def test_titulo_pagina(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "Biblioteca")
+
+    def test_heading_gerenciador_visivel(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "Gerenciador de Biblioteca")
+
+    def test_boas_vindas_professor_visivel(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "Bem vindo(a) professor(a)")
+
+    # --- Seção Categorias ---
+    def test_secao_categorias_presente(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "Categorias")
+
+    def test_input_categoria_presente(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, 'id="input-categoria"')
+
+    def test_botao_adicionar_categoria_presente(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "Adicionar")
+
+    # --- Seção Livros ---
+    def test_secao_livros_presente(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "Livros")
+
+    def test_input_titulo_livro_presente(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, 'placeholder="Título do livro"')
+
+    def test_input_autor_presente(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, 'placeholder="Autor"')
+
+    def test_select_categoria_presente(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, 'id="select-categoria"')
+
+    def test_botao_adicionar_livro_presente(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "Adicionar livro")
