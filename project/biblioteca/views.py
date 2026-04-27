@@ -1,5 +1,5 @@
 import json
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -98,9 +98,18 @@ def livro(request, id):
     livro = Livro.objects.get(id=id)
     return render(request, 'biblioteca/livro.html', {'livro': livro})
 
+@login_required
 def meusLivros(request):
-    emprestimos = Emprestimo.objects.filter(devolvido=False)
-    return render(request, 'biblioteca/meusLivros.html', {'emprestimos': emprestimos})
+    usuario = Usuario.objects.filter(id_autenticado=request.user).first()
+
+    emprestimos = Emprestimo.objects.filter(
+        usuario=usuario,
+        devolvido=False
+    )
+
+    return render(request, 'biblioteca/meusLivros.html', {
+        'emprestimos': emprestimos
+    })
 
 @login_required
 def criar_alerta(request, id):
@@ -134,3 +143,21 @@ def salvar_livros(request):
             )
 
         return JsonResponse({'status': 'ok'})
+    
+@login_required
+def renovar_livro(request, id):
+    if request.method == "POST":
+        usuario = Usuario.objects.filter(id_autenticado=request.user).first()
+
+        if not usuario:
+            return redirect('cadastro')
+
+        emprestimo = get_object_or_404(
+            Emprestimo,
+            id=id,
+            usuario=usuario
+        )
+
+        emprestimo.renovar()
+
+    return redirect('meusLivros')
