@@ -52,7 +52,7 @@
 
             {% if emprestimo.diasRestantes <= 0 %}
                 <p class="renovacoes-texto">
-                    {{ emprestimo.maxRenovacoes|add:"-"|add:emprestimo.renovacoes }} renovações restantes
+                    {{ emprestimo.renovacoes_restantes }} renovações restantes
                 </p>
             {% endif %}
             {% if emprestimo.diasRestantes == 1 %}
