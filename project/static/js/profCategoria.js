@@ -1,8 +1,18 @@
-let livros = JSON.parse(localStorage.getItem('livros')) || [];
+livros = JSON.parse(localStorage.getItem('lletivros')) || [];
 let editandoIndex = null;
 
 function salvarNoStorage() {
-    localStorage.setItem('livros', JSON.stringify(livros));
+    const livros = JSON.parse(localStorage.getItem('lletivros')) || [];
+
+    fetch('/api/salvar-livros/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(livros)
+    })
+    .then(res => res.json())
+    .then(data => console.log('Salvo no Django:', data));
 }
 
 
@@ -66,7 +76,7 @@ function adicionarLivro() {
         livros.push({ titulo, autor, categoria });
     }
 
-    salvarNoStorage();
+    salvarNoStorage(titulo, autor, categoria);
     renderizarLivros();
     limparFormularioLivro();
 }
