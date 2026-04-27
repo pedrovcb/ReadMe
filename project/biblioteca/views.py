@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render, redirect
 
 from django.contrib.auth.decorators import login_required
@@ -5,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from .models import Livro, Usuario, Emprestimo, AlertaLivroDisponivel
-
+from django.http import JsonResponse
 # Create your views here.
 
 """
@@ -120,3 +121,16 @@ def criar_alerta(request, id):
 
 def profDiciplinaCategoria(request):
     return render(request, 'profDiciplinaCategoria.html')
+
+def salvar_livros(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+
+        for item in data:
+            Livro.objects.create(
+                titulo=item['titulo'],
+                autor=item['autor'],
+                quantidade=1
+            )
+
+        return JsonResponse({'status': 'ok'})
