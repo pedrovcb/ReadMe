@@ -107,3 +107,53 @@ Relato Programação em Par:
 Vídeo da Entrega 02: 
 </br>
 [Clique aqui para acessar o vídeo](https://youtu.be/ggHI4cv6ZjY)
+
+---
+### Entrega 03 - 27/04/2026
+
+#### Jira
+Sprint 03:
+![Sprint 03](https://i.ibb.co/WvNWSVTz/image.png)
+
+Backlog:
+![Backlog](https://i.ibb.co/LhBhyXRd/image.png)
+
+Link para o JIRA:</br>
+[Acesse aqui](https://pvcb-cesar.atlassian.net/jira/software/projects/FDS/boards/2/backlog)
+</br>
+
+#### Testes de Sistema (E2E) Automatizados
+
+![E2E](https://i.ibb.co/RTpsV75r/image.png)
+
+Vídeo sobre os Testes de Sistema (E2E): 
+</br>
+[Clique aqui para acessar o vídeo](https://youtu.be/8tAOmR0T3wM)
+
+#### Deployment das novas histórias
+
+Vídeo da Entrega 03: 
+</br>
+[Clique aqui para acessar o vídeo](https://youtu.be/C36Z8_xaJOY)
+
+#### Issue/bug tracker (Github)
+
+Versão atualizada do Issue Tracker:
+![open](https://i.ibb.co/0gqVnz2/image.png)
+![closed](https://i.ibb.co/JRrC8ZcP/image.png)
+
+#### Relato Programação em Par:
+
+Nessa entrega, como a equipe já demonstrava maior domínio tanto sobre o Django, quanto sobre metódos ágeis. A equipe decidiu separar equipes para a implementação de cada história escolhida. Para isso, utilizamos da estrutura do github para versionamento e desenvolvimento paralelo entre equipes. Através das etapas de:
+- Diferentes Branches
+- Criação de Pull Requests
+- Avaliação de Pull Requests
+- Merges na Main
+- Atualização no JIRA
+
+A comunicação e estratégia de desenvolvimento entre membros de uma mesma equipe, continuou com a mesma lógica utilizada na entrega anterior.
+
+#### Deploy
+Para esta entrega, devido a mudança de requisito sobre CI/CD, continuamos com o deploy realizado através do PythonAnywhere
+
+[Acesse o Deploy](https://pedrovcb.pythonanywhere.com/)
