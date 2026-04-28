@@ -131,10 +131,13 @@ Vídeo sobre os Testes de Sistema (E2E):
 [Clique aqui para acessar o vídeo](https://youtu.be/8tAOmR0T3wM)
 
 #### Deployment das novas histórias
+Para esta entrega, devido a mudança de requisito sobre CI/CD, continuamos com a atualização do deploy realizado através do PythonAnywhere.
 
 Vídeo da Entrega 03: 
 </br>
 [Clique aqui para acessar o vídeo](https://youtu.be/C36Z8_xaJOY)
+
+[Acesse o Deploy](https://pedrovcb.pythonanywhere.com/)
 
 #### Issue/bug tracker (Github)
 
@@ -152,8 +155,3 @@ Nessa entrega, como a equipe já demonstrava maior domínio tanto sobre o Django
 - Atualização no JIRA
 
 A comunicação e estratégia de desenvolvimento entre membros de uma mesma equipe, continuou com a mesma lógica utilizada na entrega anterior.
-
-#### Deploy
-Para esta entrega, devido a mudança de requisito sobre CI/CD, continuamos com o deploy realizado através do PythonAnywhere
-
-[Acesse o Deploy](https://pedrovcb.pythonanywhere.com/)
