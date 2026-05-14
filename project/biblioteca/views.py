@@ -7,6 +7,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from .models import Livro, Usuario, Emprestimo, AlertaLivroDisponivel
 from django.http import JsonResponse
+from datetime import date
+from django.core.mail import send_mail
 # Create your views here.
 
 """
@@ -101,15 +103,35 @@ def livro(request, id):
 @login_required
 def meusLivros(request):
     usuario = Usuario.objects.filter(id_autenticado=request.user).first()
+    hoje = date.today()
 
     emprestimos = Emprestimo.objects.filter(
         usuario=usuario,
         devolvido=False
     )
+    
+    for emprestimo in emprestimos:
+        if emprestimo.dataDevolucao < hoje:
+            dias_atraso = (hoje - emprestimo.dataDevolucao).days
+            send_mail(
+                subject='⚠️ Devolução pendente – Biblioteca ReadMe',
+                message=(
+                    f'Olá, {usuario.nome}!\n\n'
+                    f'O prazo de devolução do livro "{emprestimo.livro.titulo}" '
+                    f'venceu há {dias_atraso} dia(s).\n'
+                    f'Por favor, devolva o livro o quanto antes.\n\n'
+                    f'Atenciosamente,\nEquipe do ReadMe'
+                ),
+                from_email=None,
+                recipient_list=[usuario.email],
+                fail_silently=True,
+            )
 
     return render(request, 'biblioteca/meusLivros.html', {
         'emprestimos': emprestimos
     })
+
+    
 
 @login_required
 def criar_alerta(request, id):
