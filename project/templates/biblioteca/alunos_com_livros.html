@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Alunos com livros</title>
+</head>
+<body>
+
+    <h1>Alunos com livros em posse</h1>
+
+    {% if emprestimos_ativos %}
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Aluno</th>
+                    <th>Matrícula</th>
+                    <th>Livro</th>
+                    <th>Data do empréstimo</th>
+                    <th>Data de devolução</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for emprestimo in emprestimos_ativos %}
+                    <tr>
+                        <td>{{ emprestimo.usuario.nome }}</td>
+                        <td>{{ emprestimo.usuario.matricula }}</td>
+                        <td>{{ emprestimo.livro.titulo }}</td>
+                        <td>{{ emprestimo.dataEmprestimo }}</td>
+                        <td>{{ emprestimo.dataDevolucao }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhum aluno está atualmente com livros emprestados.</p>
+    {% endif %}
+
+</body>
+</html>

@@ -76,6 +76,12 @@ def login_view(request):
     
     return render(request, 'login.html')
 
+def alunos_com_livros(request):
+    emprestimos_ativos = Emprestimo.objects.filter(devolvido=False).select_related("usuario", "livro")
+
+    return render(request, "biblioteca/alunos_com_livros.html", {
+        "emprestimos_ativos": emprestimos_ativos
+    })
 
 def menu(request):
     livro = None
