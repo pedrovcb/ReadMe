@@ -9,17 +9,14 @@ from .models import Livro, Usuario, Emprestimo, AlertaLivroDisponivel
 from django.http import JsonResponse
 # Create your views here.
 
-"""
 def home(request):
-    livros = Livro.objects.all()
-    usuarios = Usuario.objects.all()
-    emprestimos = Emprestimo.objects.filter(devolvido=False)
-    return render(request, 'biblioteca/home.html', {
+    livros = Livro.objects.all()[:20]
+
+    context = {
         'livros': livros,
-        'usuarios': usuarios,
-        'emprestimos': emprestimos
-    })
-"""
+    }
+
+    return render(request, 'biblioteca/home.html', context)
 
 def cadastro(request):
     if request.method == 'POST':

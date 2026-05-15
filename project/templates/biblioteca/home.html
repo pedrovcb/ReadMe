@@ -1,0 +1,158 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReadMe</title>
+
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+
+<body>
+    <div class="home-page">
+
+        <header class="topbar">
+            <div class="access-block">
+                <span class="access-label">Acesso como:</span>
+
+                <div class="button-group">
+                    <a href="/admin/" class="pill-btn">Admin</a>
+                    <a href="#" class="pill-btn">Professor</a>
+                </div>
+            </div>
+
+            <div class="access-block right">
+                <span class="access-label">Acesso como aluno:</span>
+
+                <div class="button-group">
+                    <a href="/cadastro/" class="pill-btn">Registrar</a>
+                    <a href="/login/" class="pill-btn outline">Login</a>
+                </div>
+            </div>
+        </header>
+
+        <main class="hero">
+
+            {% if livros %}
+                <div class="carousel-wrapper">
+
+                    <!-- Coluna 1 -->
+                    <div class="carousel-row row-1">
+                        <div class="carousel-track">
+                            {% for livro in livros %}
+                                {% if livro.capa %}
+                                    <div class="book-card">
+                                        <img src="{{ livro.capa.url }}" alt="{{ livro.titulo }}">
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% for livro in livros %}
+                                {% if livro.capa %}
+                                    <div class="book-card">
+                                        <img src="{{ livro.capa.url }}" alt="{{ livro.titulo }}">
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Coluna 2 -->
+                    <div class="carousel-row row-2">
+                        <div class="carousel-track">
+                            {% for livro in livros|slice:"7:" %}
+                                {% if livro.capa %}
+                                    <div class="book-card">
+                                        <img src="{{ livro.capa.url }}" alt="{{ livro.titulo }}">
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% for livro in livros|slice:":7" %}
+                                {% if livro.capa %}
+                                    <div class="book-card">
+                                        <img src="{{ livro.capa.url }}" alt="{{ livro.titulo }}">
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% for livro in livros|slice:"7:" %}
+                                {% if livro.capa %}
+                                    <div class="book-card">
+                                        <img src="{{ livro.capa.url }}" alt="{{ livro.titulo }}">
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% for livro in livros|slice:":7" %}
+                                {% if livro.capa %}
+                                    <div class="book-card">
+                                        <img src="{{ livro.capa.url }}" alt="{{ livro.titulo }}">
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Coluna 3 -->
+                    <div class="carousel-row row-3">
+                        <div class="carousel-track">
+                            {% for livro in livros|slice:"14:" %}
+                                {% if livro.capa %}
+                                    <div class="book-card">
+                                        <img src="{{ livro.capa.url }}" alt="{{ livro.titulo }}">
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% for livro in livros|slice:":14" %}
+                                {% if livro.capa %}
+                                    <div class="book-card">
+                                        <img src="{{ livro.capa.url }}" alt="{{ livro.titulo }}">
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% for livro in livros|slice:"14:" %}
+                                {% if livro.capa %}
+                                    <div class="book-card">
+                                        <img src="{{ livro.capa.url }}" alt="{{ livro.titulo }}">
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% for livro in livros|slice:":14" %}
+                                {% if livro.capa %}
+                                    <div class="book-card">
+                                        <img src="{{ livro.capa.url }}" alt="{{ livro.titulo }}">
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+            {% endif %}
+
+            <div class="side-blur left-blur"></div>
+            <div class="side-blur right-blur"></div>
+
+            <div class="center-highlight"></div>
+
+            <section class="hero-content">
+                <img src="{% static 'img/readme.png' %}" alt="Logo ReadMe" class="hero-logo">
+
+                <h1>ReadMe</h1>
+
+                <p>
+                    Seu gerenciador de Sistemas<br>
+                    Bibliotecários Acadêmicos.
+                </p>
+            </section>
+
+        </main>
+    </div>
+</body>
+</html>
