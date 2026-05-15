@@ -2,39 +2,233 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Alunos com livros</title>
+    <title>Alunos com livros em posse</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f7f7f7;
+            color: #1f1f1f;
+        }
+
+        .navbar {
+            width: 100%;
+            height: 58px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .menu-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .menu-links a {
+            text-decoration: none;
+            color: black;
+            font-size: 15px;
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: 48px auto;
+            padding: 0 24px;
+        }
+
+        .titulo-area {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .titulo-area h1 {
+            font-size: 30px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .titulo-area p {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .capa-area {
+            height: 260px;
+            background-color: #d9d9d9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .capa-area img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .sem-capa {
+            font-size: 48px;
+            color: #777;
+        }
+
+        .card-conteudo {
+            padding: 18px;
+        }
+
+        .livro-titulo {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .livro-autor {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 18px;
+        }
+
+        .info {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .info span {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 7px 12px;
+            background-color: #2f9e44;
+            color: white;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .vazio {
+            background-color: white;
+            padding: 40px;
+            text-align: center;
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+        }
+
+        .vazio h2 {
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .vazio p {
+            color: #666;
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>Alunos com livros em posse</h1>
+    <nav class="navbar">
+        <div class="menu-links">
+            <a href="{% url 'menu' %}">Menu</a>
+            <a href="{% url 'catalogo' %}">Catálogo</a>
+            <a href="{% url 'meusLivros' %}">Meus Livros</a>
+        </div>
 
-    {% if emprestimos_ativos %}
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Aluno</th>
-                    <th>Matrícula</th>
-                    <th>Livro</th>
-                    <th>Data do empréstimo</th>
-                    <th>Data de devolução</th>
-                </tr>
-            </thead>
+        <div class="logo">ReadMe</div>
+    </nav>
 
-            <tbody>
+    <main class="container">
+
+        <section class="titulo-area">
+            <h1>Alunos com livros em posse</h1>
+            <p>Registro dos empréstimos que ainda não foram devolvidos.</p>
+        </section>
+
+        {% if emprestimos_ativos %}
+            <section class="cards">
+
                 {% for emprestimo in emprestimos_ativos %}
-                    <tr>
-                        <td>{{ emprestimo.usuario.nome }}</td>
-                        <td>{{ emprestimo.usuario.matricula }}</td>
-                        <td>{{ emprestimo.livro.titulo }}</td>
-                        <td>{{ emprestimo.dataEmprestimo }}</td>
-                        <td>{{ emprestimo.dataDevolucao }}</td>
-                    </tr>
+                    <div class="card">
+
+                        <div class="capa-area">
+                            {% if emprestimo.livro.capa %}
+                                <img src="{{ emprestimo.livro.capa.url }}" alt="Capa do livro {{ emprestimo.livro.titulo }}">
+                            {% else %}
+                                <div class="sem-capa">?</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="card-conteudo">
+                            <div class="livro-titulo">{{ emprestimo.livro.titulo }}</div>
+                            <div class="livro-autor">{{ emprestimo.livro.autor }}</div>
+
+                            <div class="info">
+                                <span>Aluno:</span> {{ emprestimo.usuario.nome }}
+                            </div>
+
+                            <div class="info">
+                                <span>Matrícula:</span> {{ emprestimo.usuario.matricula }}
+                            </div>
+
+                            <div class="info">
+                                <span>Empréstimo:</span> {{ emprestimo.dataEmprestimo }}
+                            </div>
+
+                            <div class="info">
+                                <span>Devolução prevista:</span> {{ emprestimo.dataDevolucao }}
+                            </div>
+
+                            <div class="status">
+                                Em posse do aluno
+                            </div>
+                        </div>
+
+                    </div>
                 {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>Nenhum aluno está atualmente com livros emprestados.</p>
-    {% endif %}
+
+            </section>
+        {% else %}
+            <div class="vazio">
+                <h2>Nenhum empréstimo ativo</h2>
+                <p>No momento, nenhum aluno está com livro em posse.</p>
+            </div>
+        {% endif %}
+
+    </main>
 
 </body>
 </html>
