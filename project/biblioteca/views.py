@@ -7,6 +7,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from .models import Livro, Usuario, Emprestimo, AlertaLivroDisponivel
 from django.http import JsonResponse
+from django.contrib.auth import logout
+
 # Create your views here.
 
 def home(request):
@@ -58,6 +60,10 @@ def cadastro(request):
 
     return render(request, 'cadastro.html')
 
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
 def login_view(request):
     if request.method == 'POST':
         usuario = request.POST.get('usuario')
@@ -81,9 +87,14 @@ def alunos_com_livros(request):
     })
 
 def menu(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, 'Faça login para acessar o menu.')
+        return redirect('login')
+
     livro = None
     erro = None
     query = request.GET.get('q', '')
+
     if query:
         try:
             livro = Livro.objects.filter(titulo__icontains=query).first()
@@ -91,9 +102,18 @@ def menu(request):
                 erro = 'Nenhum livro encontrado.'
         except:
             erro = 'Erro na pesquisa.'
-    return render(request, 'biblioteca/menu.html', {'livro': livro, 'erro': erro, 'query': query})
+
+    return render(request, 'biblioteca/menu.html', {
+        'livro': livro,
+        'erro': erro,
+        'query': query
+    })
 
 def catalogo(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, 'Faça login para acessar o catálogo.')
+        return redirect('login')
+
     livros = Livro.objects.all()
     return render(request, 'biblioteca/catalogo.html', {'livros': livros})
 
@@ -101,9 +121,18 @@ def livro(request, id):
     livro = Livro.objects.get(id=id)
     return render(request, 'biblioteca/livro.html', {'livro': livro})
 
-@login_required
 def meusLivros(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, 'Faça login para acessar seus livros.')
+        return redirect('login')
+
     usuario = Usuario.objects.filter(id_autenticado=request.user).first()
+
+    if not usuario:
+        messages.warning(request, 'Seu usuário não possui cadastro de aluno vinculado.')
+        return render(request, 'biblioteca/meusLivros.html', {
+            'emprestimos': []
+        })
 
     emprestimos = Emprestimo.objects.filter(
         usuario=usuario,
