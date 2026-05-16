@@ -81,4 +81,13 @@ class AlertaLivroDisponivel(models.Model):
 
     def __str__(self):
         return f"{self.usuario} - {self.livro}"
+    
+    
+class IndicacaoLivros(models.Model):
+    professor = models.ForeignKey(User, on_delete=models.CASCADE)
+    titulo = models.CharField(max_length=500)
+    autor = models.CharField(max_length=200)
+    isbn = models.CharField(max_length=13)
 
+    def __str__(self):
+        return f"{self.titulo} por {self.autor} Indicado por {self.professor.username}"
