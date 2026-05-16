@@ -160,8 +160,8 @@ def criar_alerta(request, id):
     messages.success(request, 'Alerta de disponibilidade ativado com sucesso.')
     return redirect('livro', id=livro.id)
 
-def profDiciplinaCategoria(request):
-    return render(request, 'profDiciplinaCategoria.html')
+def profdisciplinacategoria(request):
+    return render(request, 'profdisciplinacategoria.html')
 
 def salvar_livros(request):
     if request.method == 'POST':
