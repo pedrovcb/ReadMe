@@ -13,7 +13,13 @@ from django.contrib.auth import logout
 # Create your views here.
 
 def is_professor(user):
-    return user.is_authenticated and user.groups.filter(name="Professor").exists()
+    if not user.is_authenticated:
+        return False
+
+    return Usuario.objects.filter(
+        id_autenticado=user,
+        is_professor=True
+    ).exists()
 
 def home(request):
     livros = Livro.objects.all()[:20]
@@ -77,6 +83,12 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
+
+            usuario_obj = Usuario.objects.filter(id_autenticado=user).first()
+
+            if usuario_obj and usuario_obj.is_professor:
+                return redirect('professor_hub')
+
             return redirect('menu')
         else:
             return render(request, 'login.html', {'erro': 'Usuário ou senha inválidos.'})
