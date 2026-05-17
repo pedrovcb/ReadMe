@@ -30,6 +30,17 @@
                 <span>?</span>
             {% endif %}
         </div>
+       {% if request.user.is_authenticated %}
+            {% with usuario=request.user.usuario %}
+                {% if usuario.is_professor %}
+                    <div style="margin-top: 20px; text-align: left;">
+                        <a href="{% url 'professor_hub' %}" class="prof-btn">
+                            Acessar Painel do Professor
+                        </a>
+                    </div>
+                {% endif %}
+            {% endwith %}
+        {% endif %}
         <form method="GET" action="{% url 'menu' %}">
             <div class="search-bar">
                 <input type="text" name="q" placeholder="Digite o nome do livro..." value="{{ query }}">

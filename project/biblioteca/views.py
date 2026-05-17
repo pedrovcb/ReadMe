@@ -1,17 +1,25 @@
 import json
 from django.shortcuts import render, redirect, get_object_or_404
 
-from django.contrib.auth.decorators import login_required
+
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from .models import Livro, Usuario, Emprestimo, AlertaLivroDisponivel
+from .models import Livro, Usuario, Emprestimo, AlertaLivroDisponivel, IndicacaoLivros
 from django.http import JsonResponse
 from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
-from .models import IndicacaoLivros
 
 # Create your views here.
+
+def is_professor(user):
+    if not user.is_authenticated:
+        return False
+
+    return Usuario.objects.filter(
+        id_autenticado=user,
+        is_professor=True
+    ).exists()
 
 def home(request):
     livros = Livro.objects.all()[:20]
@@ -75,6 +83,12 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
+
+            usuario_obj = Usuario.objects.filter(id_autenticado=user).first()
+
+            if usuario_obj and usuario_obj.is_professor:
+                return redirect('professor_hub')
+
             return redirect('menu')
         else:
             return render(request, 'login.html', {'erro': 'Usuário ou senha inválidos.'})
@@ -162,8 +176,15 @@ def criar_alerta(request, id):
     messages.success(request, 'Alerta de disponibilidade ativado com sucesso.')
     return redirect('livro', id=livro.id)
 
-def profDiciplinaCategoria(request):
-    return render(request, 'profDiciplinaCategoria.html')
+@login_required(login_url='login')
+@user_passes_test(is_professor, login_url='login')
+def professor_hub(request):
+    return render(request, 'biblioteca/professor.html')
+
+@login_required(login_url='login')
+@user_passes_test(is_professor, login_url='login')
+def profdisciplinacategoria(request):
+    return render(request, 'biblioteca/profdisciplinacategoria.html')
 
 def salvar_livros(request):
     if request.method == 'POST':
@@ -204,7 +225,7 @@ def indicar_livro(request):
 
         if not titulo or not autor:
             messages.error(request, 'Por favor, preencha todos os campos.')
-            return redirect('profDiciplinaCategoria')
+            return redirect('profdisciplinacategoria')
 
         IndicacaoLivros.objects.create(
             professor=request.user,
@@ -213,6 +234,6 @@ def indicar_livro(request):
         )
         
         messages.success(request, 'Indicação de livro enviada com sucesso!')
-        return redirect('profDiciplinaCategoria')
+        return redirect('profdisciplinacategoria')
         
-    return redirect('profDiciplinaCategoria')
+    return redirect('profdisciplinacategoria')

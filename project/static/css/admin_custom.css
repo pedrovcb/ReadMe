@@ -1,49 +1,43 @@
-#content > h1, .breadcrumbs, .object-tools, .errornote {
-    display: none !important;
-}
-
-body, #container, #content {
-    background-color: #121212 !important; 
-}
+/* Add livro*/
 
 #readme-container {
-    padding: 40px;
     font-family: 'Arial', sans-serif;
 }
 
 #readme-container h2 {
-    color: #ffffff;
-    font-size: 28px;
-    font-weight: normal;
-    margin-bottom: 40px;
+    color: #fff;
+    font-size: 26px;
+    margin-bottom: 25px;
 }
 
-.flex-layout {
+#readme-container .flex-layout {
     display: flex;
-    gap: 60px;
+    gap: 40px;
     align-items: flex-start;
+    flex-wrap: wrap;
 }
 
-.image-upload-section {
-    background: #ffffff;
+#readme-container .image-upload-section {
+    background: #fff;
     border-radius: 15px;
     width: 280px;
-    height: 400px;
+    height: 360px;
+    min-width: 280px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background-color 0.2s;
+    flex-shrink: 0;
 }
 
-.image-upload-section:hover {
-    background: #f0f0f0; /* Fica levemente cinza ao passar o mouse */
+#readme-container .image-upload-section:hover {
+    background: #f0f0f0;
 }
 
-.circle-plus {
-    width: 80px;
-    height: 80px;
-    border: 4px solid #000000;
+#readme-container .circle-plus {
+    width: 60px;
+    height: 60px;
+    border: 4px solid #000;
     border-radius: 50%;
     position: relative;
     display: flex;
@@ -51,58 +45,97 @@ body, #container, #content {
     justify-content: center;
 }
 
-.horizontal-line, .vertical-line {
-    background-color: #000000;
-    position: absolute;
-    border-radius: 2px;
+#readme-container .horizontal-line { width: 32px; height: 5px; background: #000; position: absolute; }
+#readme-container .vertical-line { width: 5px; height: 32px; background: #000; position: absolute; }
+
+#readme-container .form-fields-section {
+    flex: 1;
+    min-width: 300px;
 }
 
-.horizontal-line { width: 44px; height: 6px; }
-.vertical-line { width: 6px; height: 44px; }
-
-.form-fields-section {
-    flex-grow: 1;
-    max-width: 500px;
+#readme-container .input-group {
+    margin-bottom: 18px;
 }
 
-.input-group {
-    margin-bottom: 25px;
-}
-
-.input-group label {
+#readme-container .input-group label {
     display: block;
-    margin-bottom: 8px;
-    color: #ffffff;
-    font-size: 16px;
+    margin-bottom: 6px;
+    color: #fff;
+    font-size: 14px;
 }
 
-input[type="text"], 
-input[type="number"], 
-select {
-    width: 100% !important;
-    border-radius: 20px !important;
-    border: none !important;
-    padding: 14px 20px !important;
-    font-size: 16px;
-    background-color: #ffffff !important;
-    color: #000000 !important;
-    box-sizing: border-box;
-    outline: none;
-}
-
-.btn-salvar {
-    background-color: #ffffff;
-    color: #000000;
-    font-weight: bold;
+#readme-container input[type="text"], 
+#readme-container input[type="number"], 
+#readme-container select {
+    width: 100%;
+    border-radius: 20px;
     border: none;
-    padding: 14px 40px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-    transition: background-color 0.2s;
+    padding: 10px 16px;
+    font-size: 14px;
+    background: #fff;
+    color: #000;
+    box-sizing: border-box;
 }
 
-.btn-salvar:hover {
-    background-color: #e0e0e0;
+#readme-container .isbn-qtd-row {
+    display: flex;
+    gap: 20px;
+}
+
+#readme-container .isbn-field {
+    flex: 2;
+}
+
+#readme-container .qtd-field {
+    flex: 1;
+}
+
+/* Dashboard*/
+.small-box .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 15px;
+}
+
+.small-box.bg-info .inner h3,
+.small-box.bg-info .inner p,
+.small-box.bg-success .inner h3,
+.small-box.bg-success .inner p,
+.small-box.bg-warning .inner h3,
+.small-box.bg-warning .inner p,
+.small-box.bg-danger .inner h3,
+.small-box.bg-danger .inner p {
+    color: #000 !important;
+}
+
+.small-box.bg-info .small-box-footer,
+.small-box.bg-success .small-box-footer,
+.small-box.bg-warning .small-box-footer,
+.small-box.bg-danger .small-box-footer {
+    color: #000 !important;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    #readme-container .flex-layout {
+        flex-direction: column;
+        align-items: center;
+    }
+    #readme-container .image-upload-section {
+        width: 100%;
+        max-width: 280px;
+        height: 280px;
+        min-width: auto;
+    }
+    #readme-container .form-fields-section {
+        width: 100%;
+        min-width: auto;
+    }
+    #readme-container .isbn-qtd-row {
+        flex-direction: column;
+        gap: 0;
+    }
 }
