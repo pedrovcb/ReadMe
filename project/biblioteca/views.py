@@ -1,7 +1,8 @@
 import json
 from django.shortcuts import render, redirect, get_object_or_404
 
-from django.contrib.auth.decorators import login_required
+
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
@@ -10,6 +11,9 @@ from django.http import JsonResponse
 from django.contrib.auth import logout
 
 # Create your views here.
+
+def is_professor(user):
+    return user.is_authenticated and user.groups.filter(name="Professor").exists()
 
 def home(request):
     livros = Livro.objects.all()[:20]
@@ -160,8 +164,15 @@ def criar_alerta(request, id):
     messages.success(request, 'Alerta de disponibilidade ativado com sucesso.')
     return redirect('livro', id=livro.id)
 
+@login_required(login_url='login')
+@user_passes_test(is_professor, login_url='login')
+def professor_hub(request):
+    return render(request, 'biblioteca/professor.html')
+
+@login_required(login_url='login')
+@user_passes_test(is_professor, login_url='login')
 def profdisciplinacategoria(request):
-    return render(request, 'profdisciplinacategoria.html')
+    return render(request, 'biblioteca/profdisciplinacategoria.html')
 
 def salvar_livros(request):
     if request.method == 'POST':

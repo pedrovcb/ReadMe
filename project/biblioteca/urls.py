@@ -14,5 +14,6 @@ urlpatterns = [
     path('api/livros/', views.salvar_livros),
     path("alunos-com-livros/", views.alunos_com_livros, name="alunos_com_livros"),
     path('emprestimo/<int:id>/renovar/', views.renovar_livro, name='renovar_livro'),
-    path('logout/', views.logout_view, name='logout')
+    path('logout/', views.logout_view, name='logout'),
+    path('professor/', views.professor_hub, name='professor_hub'),
 ]
