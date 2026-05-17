@@ -1,0 +1,159 @@
+{% extends "admin/index.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3 col-sm-6">
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3>{{ total_livros }}</h3>
+                <p>Total de Livros no Acervo</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-book"></i>
+            </div>
+            <a href="{% url 'admin:biblioteca_livro_changelist' %}" class="small-box-footer link-light link-offset-0 link-underline-opacity-0 link-underline-opacity-100-hover">
+                Ver todos <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+        <div class="small-box bg-success">
+            <div class="inner">
+                <h3>{{ livros_disponiveis }}</h3>
+                <p>Livros Disponíveis</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <a href="{% url 'admin:biblioteca_livro_changelist' %}?disponivel__exact=1" class="small-box-footer link-light link-offset-0 link-underline-opacity-0 link-underline-opacity-100-hover">
+                Ver disponíveis <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+        <div class="small-box bg-warning">
+            <div class="inner">
+                <h3>{{ emprestimos_ativos }}</h3>
+                <p>Empréstimos Ativos</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-exchange-alt"></i>
+            </div>
+            <a href="{% url 'admin:biblioteca_emprestimo_changelist' %}?devolvido__exact=0" class="small-box-footer link-dark link-offset-0 link-underline-opacity-0 link-underline-opacity-100-hover">
+                Gerenciar <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+        <div class="small-box bg-danger">
+            <div class="inner">
+                <h3>{{ emprestimos_atrasados }}</h3>
+                <p>Empréstimos Atrasados</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <a href="{% url 'admin:biblioteca_emprestimo_changelist' %}?devolvido__exact=0" class="small-box-footer link-light link-offset-0 link-underline-opacity-0 link-underline-opacity-100-hover">
+                Ver atrasados <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-clock mr-2"></i>
+                    Empréstimos Recentes
+                </h3>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Usuário</th>
+                            <th>Livro</th>
+                            <th>Data</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for emp in emprestimos_recentes %}
+                        <tr>
+                            <td>{{ emp.usuario.nome }}</td>
+                            <td>{{ emp.livro.titulo }}</td>
+                            <td>{{ emp.dataEmprestimo|date:"d/m/Y" }}</td>
+                            <td>
+                                {% if emp.devolvido %}
+                                    <span class="badge badge-success">Devolvido</span>
+                                {% elif emp.diasRestantes < 0 %}
+                                    <span class="badge badge-danger">Atrasado</span>
+                                {% elif emp.diasRestantes <= 3 %}
+                                    <span class="badge badge-warning">Urgente</span>
+                                {% else %}
+                                    <span class="badge badge-info">No prazo</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center">Nenhum empréstimo registrado</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-book mr-2"></i>
+                    Livros Mais Emprestados
+                </div>
+            <div class="card-body p-0">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Livro</th>
+                            <th>Autor</th>
+                            <th>Empréstimos</th>
+                            <th>Disponível</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for livro in livros_populares %}
+                        <tr>
+                            <td>{{ livro.titulo }}</td>
+                            <td>{{ livro.autor }}</td>
+                            <td>{{ livro.total_emprestimos }}</td>
+                            <td>
+                                {% if livro.disponivel %}
+                                    <span class="badge badge-success">Sim ({{ livro.quantidade }})</span>
+                                {% else %}
+                                    <span class="badge badge-danger">Não</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center">Nenhum livro registrado</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ block.super }}
+{% endblock %}
