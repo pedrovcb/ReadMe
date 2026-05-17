@@ -19,7 +19,9 @@
 }
 
 .card {
-    background: rgb(12, 114, 3);
+    background: #ffffff;
+    color: #000000;
+    border: 2px solid #000000;
     padding: 30px;
     width: 220px;
     border-radius: 16px;
@@ -39,7 +41,8 @@
 }
 
 .card:hover {
+    background: #ffffff;
     transform: translateY(-8px) scale(1.03);
-    box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+    box-shadow: 0 16px 30px rgba(0,0,0,0.25);
     cursor: pointer;
 }
