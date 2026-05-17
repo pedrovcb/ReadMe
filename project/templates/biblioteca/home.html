@@ -19,7 +19,13 @@
 
                 <div class="button-group">
                     <a href="/admin/" class="pill-btn">Admin</a>
-                    <a href="#" class="pill-btn">Professor</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'professor_hub' %}" class="pill-btn">Professor</a>
+                    {% else %}
+                        <a href="{% url 'login' %}?next={% url 'professor_hub' %}" class="pill-btn">
+                            Professor
+                        </a>
+                    {% endif %}
                 </div>
             </div>
 

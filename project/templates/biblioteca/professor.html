@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/professor.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<main class="professor-dashboard">
+
+    <h1>Painel do docente</h1>
+
+   
+    <section class="cards">
+
+    <a href="{% url 'profdisciplinacategoria' %}" class="card-link">
+        <div class="card">
+            <h3>Recomendar Livros</h3>
+            <p>{{ total_livros }}</p>
+        </div>
+    </a>
+
+    <a href="{% url 'alunos_com_livros' %}" class="card-link">
+        <div class="card">
+            <h3>Empréstimos Ativos</h3>
+            <p>{{ total_emprestimos }}</p>
+        </div>
+    </a>
+
+</section>
+
+    <hr>
+
+
+</main>
+
+{% endblock %}
