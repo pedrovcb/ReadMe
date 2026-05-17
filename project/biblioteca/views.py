@@ -1,27 +1,34 @@
 import json
 from django.shortcuts import render, redirect, get_object_or_404
 
-from django.contrib.auth.decorators import login_required
+
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from .models import Livro, Usuario, Emprestimo, AlertaLivroDisponivel
+from .models import Livro, Usuario, Emprestimo, AlertaLivroDisponivel, IndicacaoLivros
 from django.http import JsonResponse
-from datetime import date
-from django.core.mail import send_mail
+from django.contrib.auth import logout
+
 # Create your views here.
 
-"""
+def is_professor(user):
+    if not user.is_authenticated:
+        return False
+
+    return Usuario.objects.filter(
+        id_autenticado=user,
+        is_professor=True
+    ).exists()
+
 def home(request):
-    livros = Livro.objects.all()
-    usuarios = Usuario.objects.all()
-    emprestimos = Emprestimo.objects.filter(devolvido=False)
-    return render(request, 'biblioteca/home.html', {
+    livros = Livro.objects.all()[:20]
+
+    context = {
         'livros': livros,
-        'usuarios': usuarios,
-        'emprestimos': emprestimos
-    })
-"""
+    }
+
+    return render(request, 'biblioteca/home.html', context)
 
 def cadastro(request):
     if request.method == 'POST':
@@ -63,6 +70,10 @@ def cadastro(request):
 
     return render(request, 'cadastro.html')
 
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
 def login_view(request):
     if request.method == 'POST':
         usuario = request.POST.get('usuario')
@@ -72,17 +83,34 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
+
+            usuario_obj = Usuario.objects.filter(id_autenticado=user).first()
+
+            if usuario_obj and usuario_obj.is_professor:
+                return redirect('professor_hub')
+
             return redirect('menu')
         else:
             return render(request, 'login.html', {'erro': 'Usuário ou senha inválidos.'})
     
     return render(request, 'login.html')
 
+def alunos_com_livros(request):
+    emprestimos_ativos = Emprestimo.objects.filter(devolvido=False).select_related("usuario", "livro")
+
+    return render(request, "biblioteca/alunos_com_livros.html", {
+        "emprestimos_ativos": emprestimos_ativos
+    })
 
 def menu(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, 'Faça login para acessar o menu.')
+        return redirect('login')
+
     livro = None
     erro = None
     query = request.GET.get('q', '')
+
     if query:
         try:
             livro = Livro.objects.filter(titulo__icontains=query).first()
@@ -90,9 +118,18 @@ def menu(request):
                 erro = 'Nenhum livro encontrado.'
         except:
             erro = 'Erro na pesquisa.'
-    return render(request, 'biblioteca/menu.html', {'livro': livro, 'erro': erro, 'query': query})
+
+    return render(request, 'biblioteca/menu.html', {
+        'livro': livro,
+        'erro': erro,
+        'query': query
+    })
 
 def catalogo(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, 'Faça login para acessar o catálogo.')
+        return redirect('login')
+
     livros = Livro.objects.all()
     return render(request, 'biblioteca/catalogo.html', {'livros': livros})
 
@@ -100,38 +137,27 @@ def livro(request, id):
     livro = Livro.objects.get(id=id)
     return render(request, 'biblioteca/livro.html', {'livro': livro})
 
-@login_required
 def meusLivros(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, 'Faça login para acessar seus livros.')
+        return redirect('login')
+
     usuario = Usuario.objects.filter(id_autenticado=request.user).first()
-    hoje = date.today()
+
+    if not usuario:
+        messages.warning(request, 'Seu usuário não possui cadastro de aluno vinculado.')
+        return render(request, 'biblioteca/meusLivros.html', {
+            'emprestimos': []
+        })
 
     emprestimos = Emprestimo.objects.filter(
         usuario=usuario,
         devolvido=False
     )
-    
-    for emprestimo in emprestimos:
-        if emprestimo.dataDevolucao < hoje:
-            dias_atraso = (hoje - emprestimo.dataDevolucao).days
-            send_mail(
-                subject='⚠️ Devolução pendente – Biblioteca ReadMe',
-                message=(
-                    f'Olá, {usuario.nome}!\n\n'
-                    f'O prazo de devolução do livro "{emprestimo.livro.titulo}" '
-                    f'venceu há {dias_atraso} dia(s).\n'
-                    f'Por favor, devolva o livro o quanto antes.\n\n'
-                    f'Atenciosamente,\nEquipe do ReadMe'
-                ),
-                from_email=None,
-                recipient_list=[usuario.email],
-                fail_silently=True,
-            )
 
     return render(request, 'biblioteca/meusLivros.html', {
         'emprestimos': emprestimos
     })
-
-    
 
 @login_required
 def criar_alerta(request, id):
@@ -150,8 +176,15 @@ def criar_alerta(request, id):
     messages.success(request, 'Alerta de disponibilidade ativado com sucesso.')
     return redirect('livro', id=livro.id)
 
-def profDiciplinaCategoria(request):
-    return render(request, 'profDiciplinaCategoria.html')
+@login_required(login_url='login')
+@user_passes_test(is_professor, login_url='login')
+def professor_hub(request):
+    return render(request, 'biblioteca/professor.html')
+
+@login_required(login_url='login')
+@user_passes_test(is_professor, login_url='login')
+def profdisciplinacategoria(request):
+    return render(request, 'biblioteca/profdisciplinacategoria.html')
 
 def salvar_livros(request):
     if request.method == 'POST':
@@ -183,3 +216,24 @@ def renovar_livro(request, id):
         emprestimo.renovar()
 
     return redirect('meusLivros')
+
+@login_required
+def indicar_livro(request):
+    if request.method == 'POST':
+        titulo = request.POST.get('titulo')
+        autor = request.POST.get('autor')
+
+        if not titulo or not autor:
+            messages.error(request, 'Por favor, preencha todos os campos.')
+            return redirect('profdisciplinacategoria')
+
+        IndicacaoLivros.objects.create(
+            professor=request.user,
+            titulo=titulo,
+            autor=autor
+        )
+        
+        messages.success(request, 'Indicação de livro enviada com sucesso!')
+        return redirect('profdisciplinacategoria')
+        
+    return redirect('profdisciplinacategoria')
