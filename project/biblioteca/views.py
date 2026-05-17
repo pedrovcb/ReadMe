@@ -206,7 +206,7 @@ def indicar_livro(request):
             messages.error(request, 'Por favor, preencha todos os campos.')
             return redirect('profDiciplinaCategoria')
 
-        IndicacaoLivro.objects.create(
+        IndicacaoLivros.objects.create(
             professor=request.user,
             titulo=titulo,
             autor=autor
