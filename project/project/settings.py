@@ -50,6 +50,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'biblioteca',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -60,6 +61,59 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'cloudinary',
 ]
+
+JAZZMIN_SETTINGS = {
+    "site_title": "ReadMe Admin",
+    "site_header": "ReadMe",
+    "site_brand": "ReadMe - Biblioteca",
+    "welcome_sign": "Bem-vindo ao Painel Administrativo da ReadMe",
+    "copyright": "ReadMe Biblioteca",
+    "search_model": ["biblioteca.Livro", "biblioteca.Usuario", "biblioteca.Emprestimo"],
+    "user_avatar": None,
+    "site_logo": "img/favicon.ico",
+    "site_icon": "img/favicon.ico",
+    "custom_css": "css/admin_custom.css?v=7",
+    "topmenu_links": [
+        {"name": "Dashboard", "url": "admin:index", "icon": "fas fa-tachometer-alt"},
+        {"name": "Livros", "url": "admin:biblioteca_livro_changelist", "icon": "fas fa-book"},
+        {"name": "Empréstimos", "url": "admin:biblioteca_emprestimo_changelist", "icon": "fas fa-exchange-alt"},
+        {"name": "Usuários", "url": "admin:biblioteca_usuario_changelist", "icon": "fas fa-users"},
+    ],
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "order_with_respect_to": [
+        "biblioteca",
+        "biblioteca.livro",
+        "biblioteca.emprestimo",
+        "biblioteca.usuario",
+        "biblioteca.alertalivrodisponivel",
+    ],
+    "icons": {
+        "biblioteca.livro": "fas fa-book",
+        "biblioteca.usuario": "fas fa-user",
+        "biblioteca.emprestimo": "fas fa-exchange-alt",
+        "biblioteca.alertalivrodisponivel": "fas fa-bell",
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+    },
+    "default_icon_children": "fas fa-circle",
+    "related_modal_active": True,
+    "use_google_fonts_cdn": True,
+    "show_ui_builder": True,
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "darkly",
+    "dark_mode_theme": "darkly",
+    "accent": "accent-primary",
+    "navbar": "navbar-dark navbar-black",
+    "no_navbar": False,
+    "fixed_navbar": True,
+    "fixed_header": True,
+    "fixed_sidebar": True,
+    "fixed_footer": False,
+    "sidebar": "sidebar-dark-primary",
+}
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
@@ -90,6 +144,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'biblioteca.context_processors.admin_dashboard_data',
             ],
         },
     },

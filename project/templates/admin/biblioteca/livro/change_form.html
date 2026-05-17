@@ -1,58 +1,114 @@
 {% extends "admin/change_form.html" %}
-{% load static %}
+{% load i18n admin_urls static admin_modify jazzmin %}
+{% get_jazzmin_settings request as jazzmin_settings %}
 
 {% block extrastyle %}
     {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/admin_custom.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/admin_custom.css' %}?v=7">
 {% endblock %}
 
 {% block content %}
-<div id="readme-container">
-    <h2>Adicionar Novo Livro</h2>
-    
-    <div class="flex-layout">
-        
-        <div class="image-upload-section" id="caixa-upload">
-            <div class="circle-plus">
-                <span class="horizontal-line"></span>
-                <span class="vertical-line"></span>
+
+    <div id="content-main" class="col-12">
+        <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.model_name }}_form" novalidate>
+            {% csrf_token %}
+            {% block form_top %}{% endblock %}
+
+            {% if errors %}
+                <div class="alert alert-danger">
+                    {% if errors|length == 1 %}
+                        {% trans "Please correct the error below." %}
+                    {% else %}
+                        {% trans "Please correct the errors below." %}
+                    {% endif %}
+                </div>
+                {% for error in adminform.form.non_field_errors %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <i class="icon fa fa-ban"></i>{{ error|capfirst }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="row">
+                {% if is_popup %}<input type="hidden" name="{{ is_popup_var }}" value="1">{% endif %}
+                {% if to_field %}<input type="hidden" name="{{ to_field_var }}" value="{{ to_field }}">{% endif %}
+
+                <div class="col-12 col-lg-9">
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="readme-container">
+                                <h2>Adicionar Novo Livro</h2>
+                                
+                                <div class="flex-layout">
+                                    
+                                    <div class="image-upload-section" id="caixa-upload">
+                                        <div class="circle-plus">
+                                            <span class="horizontal-line"></span>
+                                            <span class="vertical-line"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-fields-section">
+                                        <div class="input-group">
+                                            <label>Título:</label>
+                                            {{ adminform.form.titulo }}
+                                        </div>
+
+                                        <div class="input-group">
+                                            <label>Autor:</label>
+                                            {{ adminform.form.autor }}
+                                        </div>
+
+                                        <div class="isbn-qtd-row">
+                                            <div class="input-group isbn-field">
+                                                <label>ISBN:</label>
+                                                {{ adminform.form.isbn }}
+                                            </div>
+                                            <div class="input-group qtd-field">
+                                                <label>Quantidade:</label>
+                                                {{ adminform.form.quantidade }}
+                                            </div>
+                                        </div>
+
+                                        <div style="display: none;">
+                                            {{ adminform.form.capa }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-3">
+                    <div id="jazzy-actions" class="{{ jazzmin_ui.actions_classes }}">
+                        {% block submit_buttons_bottom %}
+                            {% submit_row %}
+                            {% block object-tools %}
+                                {% if change %}
+                                    {% if not is_popup %}
+                                        <div class="object-tools d-flex flex-wrap gap-2">
+                                            {% block object-tools-items %}
+                                                {% change_form_object_tools %}
+                                                {% block extra_actions %}{% endblock %}
+                                            {% endblock %}
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            {% endblock %}
+                        {% endblock %}
+                    </div>
+                </div>
+
+                {% block admin_change_form_document_ready %}
+                    <script type="text/javascript" id="django-admin-form-add-constants" src="{% static 'admin/js/change_form.js' %}" {% if adminform and add %}data-model-name="{{ opts.model_name }}"{% endif %}></script>
+                {% endblock %}
+
+                {% prepopulated_fields_js %}
             </div>
-        </div>
-
-        <div class="form-fields-section">
-            <form {% if has_file_field %}enctype="multipart/form-data" {% endif %} action="{{ form_url }}" method="post" id="{{ opts.model_name }}_form">
-                {% csrf_token %}
-                
-                <div class="input-group">
-                    <label>Título:</label>
-                    {{ adminform.form.titulo }}
-                </div>
-
-                <div class="input-group">
-                    <label>Autor:</label>
-                    {{ adminform.form.autor }}
-                </div>
-
-                <div style="display: flex; gap: 20px;">
-                    <div class="input-group" style="flex: 2;">
-                        <label>ISBN:</label>
-                        {{ adminform.form.isbn }}
-                    </div>
-                    <div class="input-group" style="flex: 1;">
-                        <label>Quantidade:</label>
-                        {{ adminform.form.quantidade }}
-                    </div>
-                </div>
-
-                <div style="display: none;">
-                    {{ adminform.form.capa }}
-                </div>
-
-                <button type="submit" class="btn-salvar" name="_save">Salvar</button>
-            </form>
-        </div>
+        </form>
     </div>
-</div>
 
 <script>
     document.getElementById('caixa-upload').addEventListener('click', function() {
@@ -62,4 +118,5 @@
         }
     });
 </script>
+
 {% endblock %}
