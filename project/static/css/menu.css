@@ -129,9 +129,9 @@
 
 .prof-btn {
     display: inline-block;
-    padding: 12px 20px;
-    background: #4a6cf7;
-    color: white;
+    padding: 20px 20px;
+    background: #ffffff;
+    color: rgb(0, 0, 0);
     border-radius: 8px;
     text-decoration: none;
     font-weight: bold;
@@ -139,6 +139,7 @@
 }
 
 .prof-btn:hover {
-    background: #3557d6;
+    background: #000000;
+    color:#ffffff;
     transform: scale(1.05);
 }
