@@ -36,6 +36,25 @@
         <ul id="lista-livros"></ul>
     </section>
 
+    <section class="box">
+        <h2>Indicar Compra de Novo Livro (Acervo)</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <p style="color: {% if message.tags == 'success' %}green{% else %}red{% endif %}; font-weight: bold; margin-bottom: 10px;">
+                    {{ message }}
+                </p>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" action="{% url 'indicar_livro' %}">
+            {% csrf_token %}
+            <input type="text" name="titulo" placeholder="Nome do livro sugerido" required>
+            <input type="text" name="autor" placeholder="Autor(a) do livro sugerido" required>
+            <button type="submit">Enviar Sugestão de Aquisição</button>
+        </form>
+    </section>
+
 </main>
 
 <script src="{% static 'js/profCategoria.js' %}"></script>

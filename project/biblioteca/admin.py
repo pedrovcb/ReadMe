@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from datetime import date
-from .models import Livro, Usuario, Emprestimo, AlertaLivroDisponivel
+from .models import Livro, Usuario, Emprestimo, AlertaLivroDisponivel, IndicacaoLivros
 
 
 @admin.register(Livro)
@@ -288,6 +288,13 @@ class AlertaLivroDisponivelAdmin(admin.ModelAdmin):
     @admin.display(description='Data Criação')
     def data_criacao(self, obj):
         return getattr(obj, 'created_at', 'N/A')
+
+
+@admin.register(IndicacaoLivros)
+class IndicacaoLivrosAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'autor', 'isbn', 'professor')
+    search_fields = ('titulo', 'autor', 'isbn')
+    list_filter = ('professor',)
 
 
 admin.site.site_header = "ReadMe - Painel Administrativo"

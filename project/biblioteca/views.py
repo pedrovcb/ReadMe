@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from .models import Livro, Usuario, Emprestimo, AlertaLivroDisponivel
+from .models import Livro, Usuario, Emprestimo, AlertaLivroDisponivel, IndicacaoLivros
 from django.http import JsonResponse
 from django.contrib.auth import logout
 
@@ -216,3 +216,24 @@ def renovar_livro(request, id):
         emprestimo.renovar()
 
     return redirect('meusLivros')
+
+@login_required
+def indicar_livro(request):
+    if request.method == 'POST':
+        titulo = request.POST.get('titulo')
+        autor = request.POST.get('autor')
+
+        if not titulo or not autor:
+            messages.error(request, 'Por favor, preencha todos os campos.')
+            return redirect('profdisciplinacategoria')
+
+        IndicacaoLivros.objects.create(
+            professor=request.user,
+            titulo=titulo,
+            autor=autor
+        )
+        
+        messages.success(request, 'Indicação de livro enviada com sucesso!')
+        return redirect('profdisciplinacategoria')
+        
+    return redirect('profdisciplinacategoria')
